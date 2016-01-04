@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#define OPENCV_310
+
 
 namespace Ui {
 class MainWindow;

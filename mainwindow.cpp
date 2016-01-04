@@ -9,10 +9,6 @@
 #include <QMimeData>
 
 using namespace std;
-#ifdef OPENCV_310
-    #include <opencv2/core.hpp>
-    using namespace cv;
-#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
