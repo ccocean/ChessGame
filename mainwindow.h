@@ -3,8 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QString>
 
-
+#include "chess.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,9 @@ private slots:
     void on_pushButton_process_clicked();
 
 private:
+    Chess chess;
+    QImage image;
+    QString m_label_Count;
     Ui::MainWindow *ui;
 };
 

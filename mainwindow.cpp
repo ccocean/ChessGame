@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->label_Board->installEventFilter(this);
     ui->label_Board->setAcceptDrops(true);
+    chess=Chess();
     //connect(ui->pushButton_process, SIGNAL(clicked()), this, SLOT());
 }
 
@@ -41,7 +42,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             QString path = urls.first().toLocalFile();
 
             // [[4]]: 在label上显示拖放的图片
-            QImage image(path); // QImage对I/O优化过, QPixmap对显示优化
+            //QImage image(path); // QImage对I/O优化过, QPixmap对显示优化
+            image=QImage(path);
             if (!image.isNull())
             {
                 image = image.scaled(ui->label_Board->size(),
@@ -49,6 +51,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                                      Qt::SmoothTransformation);
                 ui->label_Board->setPixmap(QPixmap::fromImage(image));
             }
+            chess.initImg(image);
             return true;
         }
     }
@@ -58,9 +61,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 MainWindow::~MainWindow()
 {
     delete ui;
+    chess.~Chess();
 }
 
 void MainWindow::on_pushButton_process_clicked()
 {
-    QMessageBox(QMessageBox::Warning,"Information","Really to clear data?",QMessageBox::Yes|QMessageBox::No,NULL);
+    //QMessageBox(QMessageBox::Warning,"Information","Really to clear data?",QMessageBox::Yes|QMessageBox::No,NULL);
+    chess.startProc();
+    m_label_Count="Count: ";
+    m_label_Count+=QString::number(chess.getCount(),10);
+    ui->label_Count->setText(m_label_Count);
+    ui->label_Board->update();
 }

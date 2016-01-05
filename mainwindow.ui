@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
-    <height>436</height>
+    <width>654</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>291</width>
-      <height>301</height>
+      <width>240</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -41,7 +41,7 @@
    <widget class="QPushButton" name="pushButton_process">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>170</x>
       <y>330</y>
       <width>75</width>
       <height>23</height>
@@ -51,24 +51,39 @@
      <string>处理</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="textEdit_Result">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>10</y>
+      <width>381</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Count">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>180</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>776</width>
-     <height>23</height>
+     <width>654</width>
+     <height>22</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
