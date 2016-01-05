@@ -25,7 +25,9 @@ INCLUDEPATH+=include\
 INCLUDEPATH+=include\opencv\
 INCLUDEPATH+=include\opencv2\
 
-LIBS+=Llib
+LIBS+=-L$$PWD/lib
+
+
 
 
 
