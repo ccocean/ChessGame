@@ -1,25 +1,7 @@
 #ifndef CHESS_H
 #define CHESS_H
 
-//std head files
-#include <vector>
-using namespace std;
-
-//Qt head files
-#include <QImage>
-
-//opencv head files
-//#include <opencv2/core.hpp>
-//#include <opencv2/highgui.hpp>
-//#include <opencv2/imgproc.hpp>
-#include "include/opencv2/core.hpp"
-#include "include/opencv2/highgui.hpp"
-#include "include/opencv2/imgproc.hpp"
-
-using namespace cv;
-#pragma comment( lib, "opencv_core310d.lib")
-#pragma comment( lib, "opencv_highgui310d.lib")
-#pragma comment( lib, "opencv_imgproc310d.lib")
+#include "chess_header.h"
 
 class Chess
 {
@@ -41,9 +23,13 @@ private:
     Mat image,grayImage,blurImage,thresholdMat;
     vector<Vec3f> chessman;
     int count;
+    vector<Result_t> vecResult;
 
     //functions
     void drawCircles();
+    int checkColor(Point center, int radius);
+    void analyzeBoard();
+    Mat getFeature(int type);
 };
 
 #endif // CHESS_H

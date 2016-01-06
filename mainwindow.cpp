@@ -61,7 +61,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 MainWindow::~MainWindow()
 {
     delete ui;
-    chess.~Chess();
 }
 
 void MainWindow::on_pushButton_process_clicked()

@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     chess.cpp
 
 HEADERS  += mainwindow.h \
-    chess.h
+    chess.h \
+    chess_header.h
 
 FORMS    += mainwindow.ui
 
