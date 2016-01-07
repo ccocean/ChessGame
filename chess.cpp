@@ -29,6 +29,7 @@ void Chess::startProc()
 
     //threshold(grayImage,thresholdMat,20.0,255.0,CV_THRESH_BINARY);
     drawCircles();
+    analyzeBoard();
 }
 
 void Chess::drawCircles()
@@ -51,19 +52,45 @@ void Chess::drawCircles()
 
 void Chess::analyzeBoard()
 {
+    vector<vector<Point>> counter;
+    vector<Point> points;
+    Rect bounding;
     for(size_t i=0;i<vecResult.size();i++)
     {
         vecResult[i].img=grayImage(Rect(vecResult[i].center.x,vecResult[i].center.y,vecResult[i].radius,vecResult[i].radius));
         resize(vecResult[i].img,vecResult[i].img,Size(100,100));
+        threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
+        findContours(vecResult[i].thres,counter,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);
+        for(int j=0;j<counter.size();j++)
+        {
+            for(int k=0;k<counter[j].size();k++)
+            {
+                if (counter[j][k].x<15 || counter[j][k].y<15 || counter[j][k].x>85 || counter[j][k].y>85)
+                {
+                    continue;
+                }
+                else
+                {
+                    points.push_back(counter[j][k]);
+                }
+            }
+        }
+        bounding=boundingRect(points);
+        bounding.x-=5;bounding.y-=4;
+        bounding.width+=10;bounding.height+=14;
+        vecResult[i].img=vecResult[i].img(bounding);
+        threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
+        getFeature(LINEAR,i);
     }
 }
 
-Mat Chess::getFeature(int type)
+Mat Chess::getFeature(int type,int num)
 {
     Mat output;
     switch(type)
     {
     case LINEAR:
+        vecResult[num].feature=getLinearFeature(vecResult[num].thres);
         break;
     case MATRIX:
         break;
@@ -120,12 +147,21 @@ int Chess::checkColor(Point center, int radius)
 
 static cv::Mat getLinearFeature(cv::Mat input)
 {
-    Mat output(1,intput.cols/2,CV_8UC1);
+    Mat output(1,input.cols,CV_8UC1);
     int i=0,j=0;
+    int cnt=0;
+    int temp;
     for(i=0;i<input.cols;i++)
     {
-
+        for(j=0;j<input.rows;j++)
+        {
+            temp=(int)input.ptr<uchar>(i)[j];
+            if(temp>0)
+                cnt+=temp;
+        }
+        output.ptr<uchar>(0)[i]=(uchar)cnt;
     }
+    return output;
 }
 
 static cv::Mat QImage2Mat(QImage image)

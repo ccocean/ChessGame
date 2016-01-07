@@ -29,7 +29,7 @@ private:
     void drawCircles();
     int checkColor(Point center, int radius);
     void analyzeBoard();
-    Mat getFeature(int type);
+    Mat getFeature(int type,int num);
 };
 
 #endif // CHESS_H

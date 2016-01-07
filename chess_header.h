@@ -36,6 +36,7 @@ typedef struct Result
     Point center;
     int radius;
     Mat img;
+    Mat thres;
     Mat feature;
     Result(){}
 }Result_t;
