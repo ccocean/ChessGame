@@ -26,8 +26,14 @@ void Chess::startProc()
     GaussianBlur(grayImage,blurImage,Size(5,5),2.1);
     HoughCircles(blurImage,chessman,CV_HOUGH_GRADIENT,1.5,10,130,38,10,15);
     this->count=chessman.size();
-
     //threshold(grayImage,thresholdMat,20.0,255.0,CV_THRESH_BINARY);
+
+    vecResult.reserve((size_t)this->count);
+    Result_t temp=Result_t();
+    for(int i=0;i<this->count;i++)
+    {
+        vecResult.push_back(temp);
+    }
     drawCircles();
     analyzeBoard();
 }
@@ -36,17 +42,19 @@ void Chess::drawCircles()
 {
     int radius;
     Result_t temp;
-    for(size_t i=0;i<chessman.size();i++)
+    Mat tempMat;
+    for(int i=0;i<this->count;i++)
     {
         Point center(cvRound(chessman[i][0]),cvRound(chessman[i][1]));
         radius=cvRound(chessman[i][2]);
         //qDebug("radius %d = %d\r\n",i,radius);
         circle(image,center,radius,Scalar(0,255,0));
-        temp.color=checkColor(center,radius);
-        temp.center=center;
-        temp.radius=radius;
-        vecResult.push_back(temp);
-        temp=Result_t();
+        vecResult[i].color=checkColor(center,radius);
+        vecResult[i].center=center;
+        vecResult[i].radius=radius;
+        vecResult[i].img=tempMat.clone();
+        vecResult[i].feature=tempMat.clone();
+        vecResult[i].thres=tempMat.clone();
     }
 }
 
@@ -57,13 +65,13 @@ void Chess::analyzeBoard()
     Rect bounding;
     for(size_t i=0;i<vecResult.size();i++)
     {
-        vecResult[i].img=grayImage(Rect(vecResult[i].center.x,vecResult[i].center.y,vecResult[i].radius,vecResult[i].radius));
-        resize(vecResult[i].img,vecResult[i].img,Size(100,100));
-        threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
-        findContours(vecResult[i].thres,counter,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);
-        for(int j=0;j<counter.size();j++)
+        //vecResult[i].img=grayImage(Rect(vecResult[i].center.x,vecResult[i].center.y,vecResult[i].radius,vecResult[i].radius));
+        //resize(vecResult[i].img,vecResult[i].img,Size(100,100));
+        //threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
+        //findContours(vecResult[i].thres,counter,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);
+        for(size_t j=0;j<counter.size();j++)
         {
-            for(int k=0;k<counter[j].size();k++)
+            for(size_t k=0;k<counter[j].size();k++)
             {
                 if (counter[j][k].x<15 || counter[j][k].y<15 || counter[j][k].x>85 || counter[j][k].y>85)
                 {
@@ -78,8 +86,8 @@ void Chess::analyzeBoard()
         bounding=boundingRect(points);
         bounding.x-=5;bounding.y-=4;
         bounding.width+=10;bounding.height+=14;
-        vecResult[i].img=vecResult[i].img(bounding);
-        threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
+        //vecResult[i].img=vecResult[i].img(bounding);
+        //threshold(vecResult[i].img,vecResult[i].thres,210,255,CV_THRESH_BINARY);
         getFeature(LINEAR,i);
     }
 }
@@ -90,7 +98,7 @@ Mat Chess::getFeature(int type,int num)
     switch(type)
     {
     case LINEAR:
-        vecResult[num].feature=getLinearFeature(vecResult[num].thres);
+        //vecResult[num].feature=getLinearFeature(vecResult[num].thres);
         break;
     case MATRIX:
         break;
@@ -158,6 +166,8 @@ static cv::Mat getLinearFeature(cv::Mat input)
             temp=(int)input.ptr<uchar>(i)[j];
             if(temp>0)
                 cnt+=temp;
+            else
+                continue;
         }
         output.ptr<uchar>(0)[i]=(uchar)cnt;
     }

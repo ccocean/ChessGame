@@ -21,9 +21,9 @@ public:
 
 private:
     Mat image,grayImage,blurImage,thresholdMat;
-    vector<Vec3f> chessman;
+    std::vector<Vec3f> chessman;
     int count;
-    vector<Result_t> vecResult;
+    std::vector<Result_t> vecResult;
 
     //functions
     void drawCircles();

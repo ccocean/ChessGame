@@ -38,7 +38,6 @@ typedef struct Result
     Mat img;
     Mat thres;
     Mat feature;
-    Result(){}
 }Result_t;
 
 enum ColorTypes
